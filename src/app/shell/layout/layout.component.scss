@@ -1,0 +1,30 @@
+.app-shell {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  height: 56px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  background: #f5f5f5;
+}
+
+.app-body {
+  flex: 1;
+  display: flex;
+}
+
+.app-sidebar {
+  width: 220px;
+  padding: 16px;
+  background: #eee;
+}
+
+.app-content {
+  flex: 1;
+  padding: 16px;
+}

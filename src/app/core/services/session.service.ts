@@ -30,7 +30,6 @@ export class SessionService {
   restoreSession(): Promise<void> {
     if (!this.isBrowser) {
       // SSR / pre-render safe
-      console.log('JWT payload restored');
       return Promise.resolve();
     }
     const token = localStorage.getItem('access_token');
