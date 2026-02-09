@@ -4,4 +4,4 @@ import { Component } from '@angular/core';
   standalone: true,
   template: `<p>Admin area works</p>`
 })
-export class AdminPlaceholderComponent {}
+export class AdminHomeComponent {}

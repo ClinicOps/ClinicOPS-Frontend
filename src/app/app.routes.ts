@@ -50,12 +50,12 @@ export const routes: Routes = [
   },
   {
     path: '',
-    loadChildren: () => import('./admin/ops.routes').then((m) => m.opsRoutes),
+    loadChildren: () =>
+      import('./admin/admin.routes').then((m) => m.adminRoutes),
   },
   {
     path: '',
-    loadChildren: () =>
-      import('./admin/admin.routes').then((m) => m.adminRoutes),
+    loadChildren: () => import('./admin/ops.routes').then((m) => m.opsRoutes),
   },
   {
     path: 'forbidden',

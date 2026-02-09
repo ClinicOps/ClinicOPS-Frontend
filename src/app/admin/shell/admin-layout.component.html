@@ -1,0 +1,19 @@
+<div class="admin-layout">
+  <aside class="sidebar">
+    <h3>Admin</h3>
+
+    <ul>
+      <ng-container *ngFor="let item of navItems">
+        <li *hasPermission="item.permission">
+          <a [routerLink]="item.route">
+            {{ item.label }}
+          </a>
+        </li>
+      </ng-container>
+    </ul>
+  </aside>
+
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

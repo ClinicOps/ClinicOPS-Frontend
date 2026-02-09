@@ -1,0 +1,16 @@
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 220px;
+  padding: 16px;
+  background: #f9fafb;
+  border-right: 1px solid #e5e7eb;
+}
+
+.content {
+  flex: 1;
+  padding: 24px;
+}
