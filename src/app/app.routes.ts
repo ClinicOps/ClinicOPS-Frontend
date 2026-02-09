@@ -49,13 +49,6 @@ export const routes: Routes = [
     ],
   },
   {
-    path: 'forbidden',
-    loadComponent: () =>
-      import('./shared/components/forbidden/forbidden.component').then(
-        (m) => m.ForbiddenComponent,
-      ),
-  },
-  {
     path: '',
     loadChildren: () => import('./admin/ops.routes').then((m) => m.opsRoutes),
   },
@@ -65,6 +58,13 @@ export const routes: Routes = [
       import('./admin/admin.routes').then((m) => m.adminRoutes),
   },
   {
+    path: 'forbidden',
+    loadComponent: () =>
+      import('./shared/components/forbidden/forbidden.component').then(
+        (m) => m.ForbiddenComponent,
+      ),
+    },
+    {
     path: '**',
     loadComponent: () =>
       import('./shared/components/not-found/not-found.component').then(

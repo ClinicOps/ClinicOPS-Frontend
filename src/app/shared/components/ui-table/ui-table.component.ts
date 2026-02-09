@@ -1,13 +1,25 @@
-import { Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  TrackByFunction
+} from '@angular/core';
+import { NgFor } from '@angular/common';
+import { TableColumn } from '../../ui-contracts/table-column.model';
+
 
 @Component({
   selector: 'ui-table',
   standalone: true,
+  imports: [NgFor],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <table>
       <thead>
         <tr>
-          <th *ngFor="let col of columns">{{ col.label }}</th>
+          <th *ngFor="let col of columns">
+            {{ col.label }}
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -18,26 +30,13 @@ import { Component, Input } from '@angular/core';
         </tr>
       </tbody>
     </table>
-  `,
-  styles: [`
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    th, td {
-      padding: 8px;
-      border-bottom: 1px solid #e5e7eb;
-      font-size: 13px;
-    }
-    th {
-      text-align: left;
-      font-weight: 600;
-    }
-  `]
+  `
 })
-export class UiTableComponent<T> {
-  @Input() data: T[] = [];
-  @Input() columns: { key: string; label: string }[] = [];
+export class UiTableComponent<T extends Record<string, any>> {
 
-  trackByFn = (_: number, item: any) => item.id ?? item;
+  @Input() data: T[] = [];
+  @Input() columns: TableColumn<T>[] = [];
+
+  trackByFn: TrackByFunction<T> = (_: number, item: T) =>
+  (item as any)?.id ?? item;
 }

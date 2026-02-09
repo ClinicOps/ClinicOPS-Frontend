@@ -1,8 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'ui-button',
   standalone: true,
+  imports: [NgIf],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <button
       [disabled]="disabled || loading"

@@ -1,5 +1,5 @@
 import { APP_INITIALIZER, ApplicationConfig } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withDebugTracing } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
@@ -9,6 +9,7 @@ import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { appInitializer } from './bootstrap/app.initializer';
 import { SessionService } from './core/services/session.service';
 import { loadingInterceptor } from './core/interceptors/loading.interceptor';
+import { environment } from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -38,3 +39,8 @@ export const appConfig: ApplicationConfig = {
     },
   ],
 };
+
+provideRouter(
+  routes,
+  ...(environment.production ? [] : [withDebugTracing()])
+)

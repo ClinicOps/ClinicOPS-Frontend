@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { CommonModule, NgIf } from '@angular/common';
 import { LoadingService } from '../../../core/services/loading.service';
 
 @Component({
   selector: 'ui-global-loading',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NgIf],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="global-loading" *ngIf="loading$ | async">
       Loading…
