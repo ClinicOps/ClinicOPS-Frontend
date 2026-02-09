@@ -20,7 +20,7 @@ export const permissionGuard = (
   const hasAll = required.every(p => permissionService.has(p));
 
   if (!hasAll) {
-    return router.createUrlTree(['/']);
+    return router.createUrlTree(['/forbidden']);
   }
 
   return true;
