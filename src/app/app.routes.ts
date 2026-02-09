@@ -27,7 +27,13 @@ export const routes: Routes = [
       loadChildren: () =>
         import('./domains/clinic/clinic.routes')
           .then(m => m.clinicRoutes)
-    }
+      },
+       {
+      path: 'workspaces',
+      loadChildren: () =>
+        import('./domains/doctor/doctor.routes')
+          .then(m => m.doctorRoutes)
+      },
     ],
   },
   {
