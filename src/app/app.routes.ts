@@ -4,7 +4,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { HomeComponent } from './shell/home/home.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { LayoutComponent } from './shell/layout/layout.component';
-import { permissionGuard  } from './security/permission.guard';
+import { permissionGuard } from './security/permission.guard';
 
 export const routes: Routes = [
   {
@@ -15,7 +15,7 @@ export const routes: Routes = [
     path: '',
     component: LayoutComponent,
     canActivate: [AuthGuard],
-    canActivateChild: [permissionGuard ],
+    canActivateChild: [permissionGuard],
     children: [
       {
         path: 'workspaces',
@@ -25,30 +25,37 @@ export const routes: Routes = [
           ),
       },
       {
-      path: 'workspaces',
-      loadChildren: () =>
-        import('./domains/clinic/clinic.routes')
-          .then(m => m.clinicRoutes)
-      },
-       {
-      path: 'workspaces',
-      loadChildren: () =>
-        import('./domains/doctor/doctor.routes')
-          .then(m => m.doctorRoutes)
+        path: 'workspaces',
+        loadChildren: () =>
+          import('./domains/clinic/clinic.routes').then((m) => m.clinicRoutes),
       },
       {
-      path: 'workspaces',
-      loadChildren: () =>
-        import('./domains/patient/patient.routes')
-          .then(m => m.patientRoutes)
+        path: 'workspaces',
+        loadChildren: () =>
+          import('./domains/doctor/doctor.routes').then((m) => m.doctorRoutes),
       },
       {
-      path: 'workspaces',
-      loadChildren: () =>
-        import('./domains/user/user.routes')
-          .then(m => m.userRoutes)
+        path: 'workspaces',
+        loadChildren: () =>
+          import('./domains/patient/patient.routes').then(
+            (m) => m.patientRoutes,
+          ),
+      },
+      {
+        path: 'workspaces',
+        loadChildren: () =>
+          import('./domains/user/user.routes').then((m) => m.userRoutes),
       },
     ],
+  },
+  {
+    path: '',
+    loadChildren: () => import('./admin/ops.routes').then((m) => m.opsRoutes),
+  },
+  {
+    path: '',
+    loadChildren: () =>
+      import('./admin/admin.routes').then((m) => m.adminRoutes),
   },
   {
     path: '**',
