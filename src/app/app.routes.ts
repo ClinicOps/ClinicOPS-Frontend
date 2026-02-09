@@ -4,6 +4,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { HomeComponent } from './shell/home/home.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { LayoutComponent } from './shell/layout/layout.component';
+import { permissionGuard  } from './security/permission.guard';
 
 export const routes: Routes = [
   {
@@ -14,6 +15,7 @@ export const routes: Routes = [
     path: '',
     component: LayoutComponent,
     canActivate: [AuthGuard],
+    canActivateChild: [permissionGuard ],
     children: [
       {
         path: 'workspaces',
