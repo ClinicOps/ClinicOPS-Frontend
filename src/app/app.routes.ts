@@ -5,9 +5,10 @@ import { HomeComponent } from './shell/home/home.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { LayoutComponent } from './shell/layout/layout.component';
 
-export const routes: Routes = [ {
+export const routes: Routes = [
+  {
     path: 'auth/login',
-    component: LoginComponent
+    component: LoginComponent,
   },
   {
     path: '',
@@ -15,18 +16,22 @@ export const routes: Routes = [ {
     canActivate: [AuthGuard],
     children: [
       {
-        path: '',
-        component: HomeComponent
-      }
-    ]
+        path: 'workspaces',
+        loadChildren: () =>
+          import('./domains/workspace/workspace.routes').then(
+            (m) => m.workspaceRoutes,
+          ),
+      },
+    ],
   },
   {
     path: '**',
-    redirectTo: ''
-  }];
+    redirectTo: '',
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}
