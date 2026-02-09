@@ -11,9 +11,15 @@ export const adminRoutes: Routes = [
       {
         path: '',
         loadComponent: () =>
-          import('./pages/admin-home/admin-home.component')
-            .then(m => m.AdminHomeComponent)
-      }
-    ]
-  }
+          import('./pages/admin-home/admin-home.component').then(
+            (m) => m.AdminHomeComponent,
+          ),
+      },
+      {
+        path: 'users',
+        loadChildren: () =>
+          import('./users/admin-user.routes').then((m) => m.adminUserRoutes),
+      },
+    ],
+  },
 ];
