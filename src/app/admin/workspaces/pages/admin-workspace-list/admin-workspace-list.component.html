@@ -1,0 +1,19 @@
+<ui-page-header title="Workspaces"></ui-page-header>
+
+<ui-loading *ngIf="state.loading"></ui-loading>
+
+<ui-error
+  *ngIf="!state.loading && state.error"
+  [message]="state.error">
+</ui-error>
+
+<ui-empty-state
+  *ngIf="!state.loading && !state.error && state.data.length === 0"
+  title="No workspaces found">
+</ui-empty-state>
+
+<ui-table
+  *ngIf="!state.loading && !state.error && state.data.length > 0"
+  [data]="state.data"
+  [columns]="columns">
+</ui-table>

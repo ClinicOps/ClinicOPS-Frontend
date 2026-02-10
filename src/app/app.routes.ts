@@ -46,6 +46,20 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./domains/user/user.routes').then((m) => m.userRoutes),
       },
+      {
+        path: '',
+        loadChildren: () =>
+          import('./admin/workspaces/admin-workspace.routes').then(
+            (m) => m.adminWorkspaceRoutes,
+          ),
+      },
+      {
+        path: '',
+        loadChildren: () =>
+          import('./admin/clinics/admin-clinic.routes').then(
+            (m) => m.adminClinicRoutes,
+          ),
+      },
     ],
   },
   {
@@ -63,8 +77,8 @@ export const routes: Routes = [
       import('./shared/components/forbidden/forbidden.component').then(
         (m) => m.ForbiddenComponent,
       ),
-    },
-    {
+  },
+  {
     path: '**',
     loadComponent: () =>
       import('./shared/components/not-found/not-found.component').then(
