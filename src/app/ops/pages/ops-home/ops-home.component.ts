@@ -2,6 +2,6 @@ import { Component } from '@angular/core';
 
 @Component({
   standalone: true,
-  template: `<p>OPS area works</p>`
+  templateUrl: './ops-home.component.html'
 })
-export class OpsPlaceholderComponent {}
+export class OpsHomeComponent {}

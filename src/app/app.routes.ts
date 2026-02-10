@@ -69,7 +69,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    loadChildren: () => import('./admin/ops.routes').then((m) => m.opsRoutes),
+    loadChildren: () => import('./ops/ops.routes').then((m) => m.opsRoutes),
   },
   {
     path: 'forbidden',
