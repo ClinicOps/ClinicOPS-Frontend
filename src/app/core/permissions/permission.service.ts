@@ -6,17 +6,23 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class PermissionService {
 
-  private permissions$ = new BehaviorSubject<Set<PermissionString>>(new Set());
+  public permissions$ = new BehaviorSubject<Set<PermissionString>>(new Set());
+  private loaded = false;
 
   constructor(private api: ApiClient) {}
 
   loadPermissions(clinicId: string) {
     this.api
-      .get<PermissionString[]>(`/me/permissions?clinicId=${clinicId}`)
+      .get<PermissionString[]>(`/me/permissions`)
       .subscribe(perms => {
         this.permissions$.next(new Set(perms));
+        this.loaded = true;
       });
   }
+
+  isReady(): boolean {
+  return this.loaded;
+}
 
   has(permission: PermissionString): boolean {
     return this.permissions$.value.has(permission);

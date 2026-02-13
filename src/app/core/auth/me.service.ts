@@ -13,12 +13,17 @@ export class MeService {
   ) {}
 
   bootstrap() {
-    const clinicId = this.clinicContext.getClinicId();
-    if (!clinicId) return;
+    // Always call /me first
+  this.api.get<{ userId: string; clinicId: string }>('/me')
+    .subscribe(response => {
 
-    this.api.get<{ userId: string; clinicId: string }>('/me')
-      .subscribe(() => {
+      // clinicId comes from backend, not localStorage
+      const clinicId = response.clinicId;
+
+      if (clinicId) {
+        this.clinicContext.setClinicId(clinicId);
         this.permissions.loadPermissions(clinicId);
-      });
-  }
+      }
+    });
+}
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppointmentApi, AppointmentDto } from '../services/appointment.api';
 import { PermissionService } from '../../../../core/permissions/permission.service';
@@ -49,6 +49,7 @@ import { AppointmentFormComponent } from '../components/appointment-form.compone
 })
 export class AppointmentListPage implements OnInit {
 
+  private cdr = inject(ChangeDetectorRef);
   private api = inject(AppointmentApi);
   private permissions = inject(PermissionService);
 
@@ -58,19 +59,25 @@ export class AppointmentListPage implements OnInit {
   canCreate = false;
   canUpdate = false;
 
-  ngOnInit(): void {
-    this.canView = this.permissions.has(APPOINTMENT_PERMISSIONS.VIEW);
-    this.canCreate = this.permissions.has(APPOINTMENT_PERMISSIONS.CREATE);
-    this.canUpdate = this.permissions.has(APPOINTMENT_PERMISSIONS.UPDATE);
+    ngOnInit(): void {
+    this.permissions.permissions$
+      .subscribe(() => {
+        this.canView = this.permissions.has(APPOINTMENT_PERMISSIONS.VIEW);
+        this.canCreate = this.permissions.has(APPOINTMENT_PERMISSIONS.CREATE);
+        this.canUpdate = this.permissions.has(APPOINTMENT_PERMISSIONS.UPDATE);
 
-    if (!this.canView) return;
+        this.cdr.markForCheck();
 
-    this.load();
+        if (this.canView) {
+          this.load();
+        }
+      });
   }
 
   load() {
     this.api.list().subscribe(data => {
       this.appointments = data;
+      this.cdr.markForCheck();
     });
   }
 
