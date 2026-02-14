@@ -8,11 +8,20 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './patient-form.component.html'
 })
-export class PatientFormComponent implements OnChanges {
+export class PatientFormComponent {
 
-  @Input() initialData: any;
   @Input() loading = false;
   @Output() save = new EventEmitter<any>();
+
+  private _initialData: any;
+
+  @Input()
+  set initialData(value: any) {
+    this._initialData = value;
+    if (value) {
+      this.form.patchValue(value);
+    }
+  }
 
   form: FormGroup;
 
@@ -38,14 +47,9 @@ export class PatientFormComponent implements OnChanges {
     });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['initialData'] && this.initialData) {
-      this.form.patchValue(this.initialData);
-    }
-  }
-
   submit() {
     if (this.form.invalid) return;
     this.save.emit(this.form.value);
   }
 }
+

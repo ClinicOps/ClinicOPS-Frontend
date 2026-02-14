@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PatientsFacade } from '../patients.facade';
 import { PatientFormComponent } from '../components/patient-form.component';
 import { CommonModule } from '@angular/common';
@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-patient-edit',
   standalone: true,
-  imports: [CommonModule, PatientFormComponent],
+  imports: [CommonModule, RouterModule, PatientFormComponent],
   templateUrl: './patient-edit.page.html'
 })
 export class PatientEditPage implements OnInit {

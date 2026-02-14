@@ -9,7 +9,6 @@ import { RouterModule } from '@angular/router';
   imports: [RouterModule, CommonModule],
 })
 export class PatientsListPage implements OnInit {
-
   constructor(public facade: PatientsFacade) {}
 
   ngOnInit() {
@@ -18,17 +17,16 @@ export class PatientsListPage implements OnInit {
   }
 
   archive(id: string) {
-  if (!confirm('Archive this patient?')) return;
+    if (!confirm('Archive this patient?')) return;
 
-  this.facade.archive(id).subscribe(() => {
-    this.facade.load();
-  });
-}
+    this.facade.archive(id).subscribe(() => {
+      this.facade.load();
+    });
+  }
 
-activate(id: string) {
-  this.facade.activate(id).subscribe(() => {
-    this.facade.load();
-  });
-}
-
+  activate(id: string) {
+    this.facade.activate(id).subscribe(() => {
+      this.facade.load();
+    });
+  }
 }
