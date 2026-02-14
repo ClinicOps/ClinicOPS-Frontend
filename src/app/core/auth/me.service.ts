@@ -1,29 +1,39 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal, computed } from '@angular/core';
 import { ApiClient } from '../api/api-client';
 import { ClinicContextService } from '../clinic/clinic-context.service';
-import { PermissionService } from '../permissions/permission.service';
+
+export interface MeResponse {
+  userId: string | null;
+  clinicId: string | null;
+}
 
 @Injectable({ providedIn: 'root' })
 export class MeService {
 
+  private readonly _userId = signal<string | null>(null);
+  private readonly _clinicId = signal<string | null>(null);
+  private readonly _loaded = signal(false);
+
+  readonly userId = computed(() => this._userId());
+  readonly clinicId = computed(() => this._clinicId());
+  readonly loaded = computed(() => this._loaded());
+
   constructor(
     private api: ApiClient,
-    private clinicContext: ClinicContextService,
-    private permissions: PermissionService
+    private clinicContext: ClinicContextService
   ) {}
 
-  bootstrap() {
-    // Always call /me first
-  this.api.get<{ userId: string; clinicId: string }>('/me')
-    .subscribe(response => {
+  bootstrap(): void {
+    this.api.get<MeResponse>('/me')
+      .subscribe(res => {
+        this._userId.set(res.userId);
+        this._clinicId.set(res.clinicId);
 
-      // clinicId comes from backend, not localStorage
-      const clinicId = response.clinicId;
+        if (res.clinicId) {
+          this.clinicContext.setClinicId(res.clinicId);
+        }
 
-      if (clinicId) {
-        this.clinicContext.setClinicId(clinicId);
-        this.permissions.loadPermissions(clinicId);
-      }
-    });
-}
+        this._loaded.set(true);
+      });
+  }
 }

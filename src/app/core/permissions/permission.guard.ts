@@ -11,11 +11,6 @@ export function permissionGuard(
     const permissions = inject(PermissionService);
     const router = inject(Router);
 
-     // ⬅️ THIS IS THE FIX
-  if (!permissions.isReady()) {
-    return true; // allow navigation, page will self-gate
-  }
-
     const allowed = Array.isArray(required)
       ? permissions.hasAny(required)
       : permissions.has(required);

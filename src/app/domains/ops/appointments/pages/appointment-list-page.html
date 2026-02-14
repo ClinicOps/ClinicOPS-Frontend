@@ -1,0 +1,32 @@
+<section *ngIf="canView(); else forbidden">
+    <h2>Appointments</h2>
+
+    <!-- CREATE -->
+    <app-appointment-form *ngIf="canCreate" (create)="onCreate($event)"> </app-appointment-form>
+
+    <table border="1" width="100%">
+        <thead>
+            <tr>
+                <th>Patient</th>
+                <th>Scheduled At</th>
+                <th>Status</th>
+                <th *ngIf="canUpdate">Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let a of appointments()">
+                <td>{{ a.patientName }}</td>
+                <td>{{ a.scheduledAt | date: 'short' }}</td>
+                <td>{{ a.status }}</td>
+                <td *ngIf="canUpdate">
+                    <button (click)="onCancel(a.id)">Cancel</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+<ng-template #forbidden>
+    <p>You do not have permission to view appointments.</p>
+</ng-template>

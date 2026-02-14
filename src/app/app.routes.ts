@@ -8,9 +8,6 @@ export const routes: Routes = [
   {
     path: 'ops/appointments',
     component: AppointmentListPage,
-    canActivate: [
-      permissionGuard(APPOINTMENT_PERMISSIONS.VIEW)
-    ]
   },
   {
     path: 'forbidden',

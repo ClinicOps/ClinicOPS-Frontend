@@ -4,12 +4,13 @@ import { MeService } from './core/auth/me.service';
 
 import { isPlatformBrowser } from '@angular/common';
 import { filter, take } from 'rxjs';
+import { AppShellComponent } from './core/app/app-shell.component';
 
 @Component({
   standalone: true,
   selector: 'app-root',
-  imports: [RouterOutlet],
-  template: `<router-outlet></router-outlet>`,
+  imports: [RouterOutlet, AppShellComponent],
+  templateUrl: './app.html',
   styleUrl: './app.scss'
 })
 export class AppComponent implements OnInit {

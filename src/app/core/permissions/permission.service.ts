@@ -1,38 +1,47 @@
-import { Injectable } from '@angular/core';
-import { ApiClient } from '../api/api-client';
+import { Injectable, signal, computed, effect } from '@angular/core';
 import { PermissionString } from './permission.types';
-import { BehaviorSubject } from 'rxjs';
+import { ApiClient } from '../api/api-client';
+import { MeService } from '../auth/me.service';
 
 @Injectable({ providedIn: 'root' })
 export class PermissionService {
 
-  public permissions$ = new BehaviorSubject<Set<PermissionString>>(new Set());
-  private loaded = false;
+  private readonly _permissions = signal<Set<PermissionString>>(new Set());
+  private readonly _loaded = signal(false);
 
-  constructor(private api: ApiClient) {}
+  readonly permissions = computed(() => this._permissions());
+  readonly loaded = computed(() => this._loaded());
 
-  loadPermissions(clinicId: string) {
+  constructor(
+  private api: ApiClient,
+  private me: MeService
+) {
+  effect(() => {
+  if (
+    this.me.loaded() &&
+    this.me.clinicId() &&
+    !this._loaded()
+  ) {
+    this.loadPermissions();
+  }
+});
+}
+
+  loadPermissions(): void {
     this.api
-      .get<PermissionString[]>(`/me/permissions`)
+      .get<PermissionString[]>('/me/permissions')
       .subscribe(perms => {
-        this.permissions$.next(new Set(perms));
-        this.loaded = true;
+        this._permissions.set(new Set(perms));
+        this._loaded.set(true);
       });
   }
 
-  isReady(): boolean {
-  return this.loaded;
-}
-
   has(permission: PermissionString): boolean {
-    return this.permissions$.value.has(permission);
+    return this._permissions().has(permission);
   }
 
   hasAny(perms: PermissionString[]): boolean {
-    return perms.some(p => this.permissions$.value.has(p));
-  }
-
-  clear() {
-    this.permissions$.next(new Set());
+    const current = this._permissions();
+    return perms.some(p => current.has(p));
   }
 }
