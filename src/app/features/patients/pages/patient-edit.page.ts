@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PatientsFacade } from '../patients.facade';
 import { PatientFormComponent } from '../components/patient-form.component';
@@ -11,6 +11,9 @@ import { CommonModule } from '@angular/common';
   templateUrl: './patient-edit.page.html'
 })
 export class PatientEditPage implements OnInit {
+
+    @ViewChild(PatientFormComponent)
+formComponent!: PatientFormComponent;
 
   patient: any;
   loading = false;
@@ -26,6 +29,11 @@ export class PatientEditPage implements OnInit {
     this.id = this.route.snapshot.paramMap.get('id')!;
     this.facade.getById(this.id).subscribe(res => {
       this.patient = res;
+
+       // Patch explicitly after view init
+    setTimeout(() => {
+      this.formComponent?.patch(res);
+    });
     });
   }
 

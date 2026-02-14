@@ -13,16 +13,6 @@ export class PatientFormComponent {
   @Input() loading = false;
   @Output() save = new EventEmitter<any>();
 
-  private _initialData: any;
-
-  @Input()
-  set initialData(value: any) {
-    this._initialData = value;
-    if (value) {
-      this.form.patchValue(value);
-    }
-  }
-
   form: FormGroup;
 
   constructor(private fb: FormBuilder) {
@@ -47,9 +37,16 @@ export class PatientFormComponent {
     });
   }
 
+  patch(data: any) {
+    if (data) {
+      this.form.patchValue(data);
+    }
+  }
+
   submit() {
     if (this.form.invalid) return;
     this.save.emit(this.form.value);
   }
 }
+
 
