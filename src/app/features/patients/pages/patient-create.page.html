@@ -1,0 +1,38 @@
+<h2>Create Patient</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+
+  <div>
+    <label>First Name</label>
+    <input formControlName="firstName" />
+  </div>
+
+  <div>
+    <label>Last Name</label>
+    <input formControlName="lastName" />
+  </div>
+
+  <div>
+    <label>Gender</label>
+    <select formControlName="gender">
+      <option value="MALE">Male</option>
+      <option value="FEMALE">Female</option>
+      <option value="OTHER">Other</option>
+    </select>
+  </div>
+
+  <div>
+    <label>Mobile</label>
+    <input formControlName="mobile" />
+  </div>
+
+  <div>
+    <label>Email</label>
+    <input formControlName="email" />
+  </div>
+
+  <button type="submit" [disabled]="loading">
+    {{ loading ? 'Saving...' : 'Create' }}
+  </button>
+
+</form>

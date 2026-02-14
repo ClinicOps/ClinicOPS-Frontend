@@ -18,4 +18,5 @@ export class ApiClient {
   delete<T>(path: string, headers?: HttpHeaders) {
     return this.http.delete<T>(`${this.baseUrl}${path}`, { headers });
   }
+  
 }

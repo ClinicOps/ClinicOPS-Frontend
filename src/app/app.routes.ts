@@ -17,5 +17,11 @@ export const routes: Routes = [
     path: '',
     redirectTo: 'ops/appointments',
     pathMatch: 'full'
-  }
+  },
+  {
+  path: 'patients',
+  loadChildren: () =>
+    import('./features/patients/patients.routes')
+      .then(m => m.PATIENTS_ROUTES)
+}
 ];

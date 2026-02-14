@@ -1,0 +1,23 @@
+<div *ngIf="facade.loading()">Loading...</div>
+
+<table *ngIf="!facade.loading()">
+  <thead>
+    <tr>
+      <th>Code</th>
+      <th>Name</th>
+      <th>Mobile</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let p of facade.patients()">
+      <td>{{ p.patientCode }}</td>
+      <td>{{ p.firstName }} {{ p.lastName }}</td>
+      <td>{{ p.mobile }}</td>
+      <td>{{ p.status }}</td>
+    </tr>
+  </tbody>
+</table>
+<button routerLink="/patients/new">New Patient</button>
+
