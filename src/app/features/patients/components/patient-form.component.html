@@ -1,0 +1,19 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+
+  <input formControlName="firstName" placeholder="First Name" />
+  <input formControlName="lastName" placeholder="Last Name" />
+
+  <select formControlName="gender">
+    <option value="MALE">Male</option>
+    <option value="FEMALE">Female</option>
+    <option value="OTHER">Other</option>
+  </select>
+
+  <input formControlName="mobile" placeholder="Mobile" />
+  <input formControlName="email" placeholder="Email" />
+
+  <button type="submit" [disabled]="loading">
+    {{ loading ? 'Saving...' : 'Save' }}
+  </button>
+
+</form>

@@ -1,0 +1,9 @@
+<h2>Edit Patient</h2>
+
+<app-patient-form
+  *ngIf="patient"
+  [initialData]="patient"
+  [loading]="loading"
+  (save)="onSave($event)">
+</app-patient-form>
+

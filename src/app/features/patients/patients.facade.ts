@@ -34,11 +34,27 @@ export class PatientsFacade {
   }
 
   create(body: any) {
-  const clinicId = this.me.clinicId();
-  return this.api.post(
-    `/api/clinics/${clinicId}/patients`,
-    body
-  );
-}
+    const clinicId = this.me.clinicId();
+    return this.api.post(`/api/clinics/${clinicId}/patients`, body);
+  }
 
+  getById(id: string) {
+    const clinicId = this.me.clinicId();
+    return this.api.get<Patient>(`/api/clinics/${clinicId}/patients/${id}`);
+  }
+
+  update(id: string, body: any) {
+    const clinicId = this.me.clinicId();
+    return this.api.put(`/api/clinics/${clinicId}/patients/${id}`, body);
+  }
+
+  archive(id: string) {
+    const clinicId = this.me.clinicId();
+    return this.api.patch(`/api/clinics/${clinicId}/patients/${id}/archive`, {});
+  }
+
+  activate(id: string) {
+    const clinicId = this.me.clinicId();
+    return this.api.patch(`/api/clinics/${clinicId}/patients/${id}/activate`, {});
+  }
 }

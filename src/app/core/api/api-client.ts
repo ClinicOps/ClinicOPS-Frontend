@@ -15,6 +15,14 @@ export class ApiClient {
     return this.http.post<T>(`${this.baseUrl}${path}`, body, { headers });
   }
 
+  put<T>(path: string, body: any, headers?: HttpHeaders) {
+    return this.http.put<T>(`${this.baseUrl}${path}`, body, { headers });
+  }
+
+  patch<T>(path: string, body: any, headers?: HttpHeaders) {
+    return this.http.patch<T>(`${this.baseUrl}${path}`, body, { headers });
+  }
+
   delete<T>(path: string, headers?: HttpHeaders) {
     return this.http.delete<T>(`${this.baseUrl}${path}`, { headers });
   }

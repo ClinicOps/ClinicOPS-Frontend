@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PatientsFacade } from '../patients.facade';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -14,7 +14,7 @@ export class PatientCreatePage {
 
   loading = false;
 
-  form:any; // temporary
+  form: FormGroup;
 
 constructor(
   private fb: FormBuilder,

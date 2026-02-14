@@ -16,8 +16,23 @@
       <td>{{ p.firstName }} {{ p.lastName }}</td>
       <td>{{ p.mobile }}</td>
       <td>{{ p.status }}</td>
+
+<button routerLink="/patients/new">New Patient</button>
+<td>
+  <button [routerLink]="['/patients', p.id, 'edit']">
+    Edit
+  </button>
+
+  <button *ngIf="p.status === 'ACTIVE'"
+          (click)="archive(p.id)">
+    Archive
+  </button>
+
+  <button *ngIf="p.status === 'ARCHIVED'"
+          (click)="activate(p.id)">
+    Activate
+  </button>
+</td>
     </tr>
   </tbody>
 </table>
-<button routerLink="/patients/new">New Patient</button>
-
