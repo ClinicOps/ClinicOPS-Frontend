@@ -1,5 +1,7 @@
 <div *ngIf="facade.loading()">Loading...</div>
 
+<button routerLink="/patients/new">New Patient</button>
+
 <table *ngIf="!facade.loading()">
   <thead>
     <tr>
@@ -7,6 +9,7 @@
       <th>Name</th>
       <th>Mobile</th>
       <th>Status</th>
+      <th>Actions</th>
     </tr>
   </thead>
 
@@ -16,23 +19,21 @@
       <td>{{ p.firstName }} {{ p.lastName }}</td>
       <td>{{ p.mobile }}</td>
       <td>{{ p.status }}</td>
+      <td>
+        <button [routerLink]="['/patients', p.id, 'edit']">
+          Edit
+        </button>
 
-<button routerLink="/patients/new">New Patient</button>
-<td>
-  <button [routerLink]="['/patients', p.id, 'edit']">
-    Edit
-  </button>
+        <button *ngIf="p.status === 'ACTIVE'"
+                (click)="archive(p.id)">
+          Archive
+        </button>
 
-  <button *ngIf="p.status === 'ACTIVE'"
-          (click)="archive(p.id)">
-    Archive
-  </button>
-
-  <button *ngIf="p.status === 'ARCHIVED'"
-          (click)="activate(p.id)">
-    Activate
-  </button>
-</td>
+        <button *ngIf="p.status === 'ARCHIVED'"
+                (click)="activate(p.id)">
+          Activate
+        </button>
+      </td>
     </tr>
   </tbody>
 </table>

@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { PatientsFacade } from '../patients.facade';
-import { PatientFormComponent } from '../components/patient-form.component';
 import { CommonModule } from '@angular/common';
+import { PatientFormComponent } from '../components/patient-form.component';
+import { PatientsFacade } from '../patients.facade';
 
 @Component({
   selector: 'app-patient-edit',
@@ -12,9 +12,6 @@ import { CommonModule } from '@angular/common';
 })
 export class PatientEditPage implements OnInit {
 
-    @ViewChild(PatientFormComponent)
-formComponent!: PatientFormComponent;
-
   patient: any;
   loading = false;
   id!: string;
@@ -22,20 +19,24 @@ formComponent!: PatientFormComponent;
   constructor(
     private route: ActivatedRoute,
     private facade: PatientsFacade,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
-    this.id = this.route.snapshot.paramMap.get('id')!;
-    this.facade.getById(this.id).subscribe(res => {
-      this.patient = res;
+  this.route.paramMap.subscribe(params => {
+    this.id = params.get('id')!;
+    this.loadPatient();
+  });
+}
 
-       // Patch explicitly after view init
-    setTimeout(() => {
-      this.formComponent?.patch(res);
-    });
-    });
-  }
+private loadPatient() {
+  this.facade.getById(this.id).subscribe(res => {
+    this.patient = { ...res };
+    this.cdr.markForCheck();
+  });
+}
+
 
   onSave(data: any) {
     this.loading = true;
@@ -51,3 +52,4 @@ formComponent!: PatientFormComponent;
     });
   }
 }
+
