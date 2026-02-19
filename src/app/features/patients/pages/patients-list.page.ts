@@ -29,4 +29,26 @@ export class PatientsListPage implements OnInit {
       this.facade.load();
     });
   }
+
+  onSearch(event: any) {
+    this.facade.setQuery(event.target.value);
+    this.facade.resetPage();
+    this.facade.load();
+  }
+
+  onStatusChange(event: any) {
+    this.facade.setStatus(event.target.value);
+    this.facade.resetPage();
+    this.facade.load();
+  }
+
+  nextPage() {
+    this.facade.nextPage();
+    this.facade.load();
+  }
+
+  prevPage() {
+    this.facade.prevPage();
+    this.facade.load();
+  }
 }

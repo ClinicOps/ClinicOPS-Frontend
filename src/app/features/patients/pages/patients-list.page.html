@@ -1,8 +1,26 @@
-<div *ngIf="facade.loading()">Loading...</div>
+<div class="toolbar">
 
-<button routerLink="/patients/new">New Patient</button>
+  <input
+    placeholder="Search name or mobile"
+    [value]="facade.query()"
+    (input)="onSearch($event)"
+  />
 
-<table *ngIf="!facade.loading()">
+  <select
+    [value]="facade.status()"
+    (change)="onStatusChange($event)">
+    <option value="ACTIVE">Active</option>
+    <option value="ARCHIVED">Archived</option>
+    <option value="ALL">All</option>
+  </select>
+
+  <button routerLink="/patients/new">
+    New Patient
+  </button>
+
+</div>
+
+<table>
   <thead>
     <tr>
       <th>Code</th>
@@ -20,20 +38,26 @@
       <td>{{ p.mobile }}</td>
       <td>{{ p.status }}</td>
       <td>
-        <button [routerLink]="['/patients', p.id, 'edit']">
-          Edit
-        </button>
-
-        <button *ngIf="p.status === 'ACTIVE'"
-                (click)="archive(p.id)">
-          Archive
-        </button>
-
-        <button *ngIf="p.status === 'ARCHIVED'"
-                (click)="activate(p.id)">
-          Activate
-        </button>
+        <button [routerLink]="['/patients', p.id, 'edit']">Edit</button>
+        <button *ngIf="p.status === 'ACTIVE'" (click)="archive(p.id)">Archive</button>
+        <button *ngIf="p.status === 'ARCHIVED'" (click)="activate(p.id)">Activate</button>
       </td>
     </tr>
   </tbody>
 </table>
+
+<div class="pagination">
+
+  <button (click)="prevPage()" [disabled]="facade.page() === 0">Prev</button>
+
+  <span>
+    Page {{ facade.page() + 1 }} of {{ facade.totalPages() }}
+  </span>
+
+  <button
+    (click)="nextPage()"
+    [disabled]="facade.page() + 1 >= facade.totalPages()">
+    Next
+  </button>
+
+</div>

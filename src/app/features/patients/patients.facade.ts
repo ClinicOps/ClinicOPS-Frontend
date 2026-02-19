@@ -13,22 +13,37 @@ export class PatientsFacade {
   loading = this.store.loading;
   totalElements = this.store.totalElements;
 
+  totalPages = this.store.totalPages;
+  page = this.store.page;
+  size = this.store.size;
+
+  query = this.store.query;
+  status = this.store.status;
+
   constructor(
     private api: ApiClient,
     private me: MeService,
   ) {}
 
-  load(page = 0, size = 10) {
+  load() {
     const clinicId = this.me.clinicId();
     if (!clinicId) return;
+
+    const page = this.store.page();
+    const size = this.store.size();
+    const query = this.store.query();
+    const status = this.store.status();
 
     this.store.loading.set(true);
 
     this.api
-      .get<PageResponse<Patient>>(`/api/clinics/${clinicId}/patients?page=${page}&size=${size}`)
+      .get<
+        PageResponse<Patient>
+      >(`/api/clinics/${clinicId}/patients?page=${page}&size=${size}&query=${query}&status=${status}`)
       .subscribe((res) => {
         this.store.patients.set(res.content);
         this.store.totalElements.set(res.totalElements);
+        this.store.totalPages.set(res.totalPages);
         this.store.loading.set(false);
       });
   }
@@ -56,5 +71,25 @@ export class PatientsFacade {
   activate(id: string) {
     const clinicId = this.me.clinicId();
     return this.api.patch(`/api/clinics/${clinicId}/patients/${id}/activate`, {});
+  }
+
+  setQuery(q: string) {
+    this.store.query.set(q);
+  }
+
+  setStatus(s: 'ACTIVE' | 'ARCHIVED' | 'ALL') {
+    this.store.status.set(s);
+  }
+
+  resetPage() {
+    this.store.page.set(0);
+  }
+
+  nextPage() {
+    this.store.page.update((p) => p + 1);
+  }
+
+  prevPage() {
+    this.store.page.update((p) => Math.max(0, p - 1));
   }
 }
