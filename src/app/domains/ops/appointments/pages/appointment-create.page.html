@@ -1,0 +1,28 @@
+<h2>Create Appointment</h2>
+
+<div>
+  <label>Patient</label>
+  <select [(ngModel)]="selectedPatientId">
+    <option value="" disabled>Select patient</option>
+    <option *ngFor="let p of patients" [value]="p.id">
+      {{ p.firstName }} {{ p.lastName }}
+    </option>
+  </select>
+</div>
+
+<div>
+  <label>Scheduled At</label>
+  <input type="datetime-local"
+         [(ngModel)]="scheduledAt" />
+</div>
+
+<div>
+  <button (click)="create()"
+          [disabled]="loading || !selectedPatientId || !scheduledAt">
+    {{ loading ? 'Creating...' : 'Create' }}
+  </button>
+
+  <button routerLink="/appointments">
+    Cancel
+  </button>
+</div>

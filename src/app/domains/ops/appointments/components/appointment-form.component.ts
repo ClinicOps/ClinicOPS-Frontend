@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -8,13 +8,19 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule],
   template: `
     <form (ngSubmit)="submit()" #f="ngForm">
-      <input
-        type="text"
-        name="patientName"
-        placeholder="Patient name"
-        [(ngModel)]="patientName"
+
+      <select
+        name="patientId"
+        [(ngModel)]="patientId"
         required
-      />
+      >
+        <option value="" disabled>Select patient</option>
+
+        <option *ngFor="let p of patients"
+                [value]="p.id">
+          {{ p.firstName }} {{ p.lastName }}
+        </option>
+      </select>
 
       <input
         type="datetime-local"
@@ -30,21 +36,29 @@ import { FormsModule } from '@angular/forms';
   `
 })
 export class AppointmentFormComponent {
+
+  @Input() patients: {
+    id: string;
+    firstName: string;
+    lastName: string;
+  }[] = [];
+
   @Output() create = new EventEmitter<{
-    patientName: string;
+    patientId: string;
     scheduledAt: string;
   }>();
 
-  patientName = '';
+  patientId = '';
   scheduledAt = '';
 
   submit() {
     this.create.emit({
-      patientName: this.patientName,
+      patientId: this.patientId,
       scheduledAt: new Date(this.scheduledAt).toISOString()
     });
 
-    this.patientName = '';
+    this.patientId = '';
     this.scheduledAt = '';
   }
 }
+
