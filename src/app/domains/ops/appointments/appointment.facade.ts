@@ -42,7 +42,7 @@ export class AppointmentFacade {
     });
   }
 
-  create(payload: { patientName: string; scheduledAt: string }): void {
+  create(payload: { patientId: string; scheduledAt: string }): void {
     this.api.create(payload).subscribe(() => {
       this.load();
     });

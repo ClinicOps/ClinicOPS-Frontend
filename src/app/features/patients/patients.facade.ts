@@ -14,9 +14,9 @@ export class PatientsFacade {
   totalElements = this.store.totalElements;
 
   totalPages = this.store.totalPages;
+  
   page = this.store.page;
   size = this.store.size;
-
   query = this.store.query;
   status = this.store.status;
 

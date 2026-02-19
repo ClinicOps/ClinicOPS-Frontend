@@ -16,7 +16,7 @@
 
         <tbody>
             <tr *ngFor="let a of appointments()">
-                <td>{{ a.patientName }}</td>
+                <td>{{ a.patientNameSnapshot }}</td>
                 <td>{{ a.scheduledAt | date: 'short' }}</td>
                 <td>{{ a.status }}</td>
                 <td *ngIf="canUpdate">

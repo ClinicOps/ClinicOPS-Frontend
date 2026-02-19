@@ -20,7 +20,7 @@ export class AppointmentListPage {
   readonly canCreate = this.facade.canCreate;
   readonly canUpdate = this.facade.canUpdate;
 
-  onCreate(payload: { patientName: string; scheduledAt: string }) {
+  onCreate(payload: { patientId: string; scheduledAt: string }) {
     this.facade.create(payload);
   }
 

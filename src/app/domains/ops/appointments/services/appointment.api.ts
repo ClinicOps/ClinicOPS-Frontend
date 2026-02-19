@@ -3,7 +3,7 @@ import { ApiClient } from '../../../../core/api/api-client';
 
 export interface AppointmentDto {
   id: string;
-  patientName: string;
+  patientNameSnapshot: string;
   scheduledAt: string;
   status: string;
 }
@@ -17,7 +17,7 @@ export class AppointmentApi {
     return this.api.get<AppointmentDto[]>('/ops/appointments');
   }
 
-  create(payload: { patientName: string; scheduledAt: string }) {
+  create(payload: { patientId: string; scheduledAt: string }) {
     return this.api.post<void>('/ops/appointments', payload);
   }
 
