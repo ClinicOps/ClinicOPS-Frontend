@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { MeService } from './core/auth/me.service';
 
 import { isPlatformBrowser } from '@angular/common';
@@ -9,7 +9,7 @@ import { AppShellComponent } from './core/app/app-shell.component';
 @Component({
   standalone: true,
   selector: 'app-root',
-  imports: [RouterOutlet, AppShellComponent],
+  imports: [AppShellComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

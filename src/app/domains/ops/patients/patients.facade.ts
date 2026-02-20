@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PatientsStore } from './patients.store';
 import { PageResponse, Patient } from './types';
-import { ApiClient } from '../../core/api/api-client';
-import { MeService } from '../../core/auth/me.service';
+import { ApiClient } from '../../../core/api/api-client';
+import { MeService } from '../../../core/auth/me.service';
+
 
 @Injectable({ providedIn: 'root' })
 export class PatientsFacade {

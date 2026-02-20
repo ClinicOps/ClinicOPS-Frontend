@@ -21,7 +21,7 @@ export const routes: Routes = [
   {
   path: 'patients',
   loadChildren: () =>
-    import('./features/patients/patients.routes')
+    import('./domains/ops/patients/patients.routes')
       .then(m => m.PATIENTS_ROUTES)
 }
 ];
