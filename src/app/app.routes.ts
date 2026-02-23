@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { AppointmentListPage } from './domains/ops/appointments/pages/appointment-list.page';
 import { permissionGuard } from './core/permissions/permission.guard';
 import { APPOINTMENT_PERMISSIONS } from './domains/ops/appointments/permissions';
+import { AVAILABILITY_ROUTES } from './domains/ops/availability/availability.routes';
 import { ForbiddenPage } from '../shared/components/forbidden.page';
 
 export const routes: Routes = [
@@ -14,6 +15,12 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./domains/ops/doctors/doctors.routes')
         .then(m => m.DOCTORS_ROUTES)
+  },
+  {
+    path: 'ops/availability',
+    loadChildren: () =>
+      import('./domains/ops/availability/availability.routes')
+        .then(m => m.AVAILABILITY_ROUTES)
   },
   {
     path: 'patients',

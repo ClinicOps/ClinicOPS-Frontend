@@ -1,0 +1,45 @@
+<div class="card p-3">
+  <h4>Weekly Schedule</h4>
+
+  <div class="btn-group mt-3">
+    <button
+      *ngFor="let day of days"
+      class="btn"
+      [class.btn-primary]="selectedDay === day"
+      [class.btn-outline-primary]="selectedDay !== day"
+      (click)="selectDay(day)">
+      {{ day | titlecase }}
+    </button>
+  </div>
+
+  <div class="mt-4">
+
+    <button class="btn btn-success mb-3" (click)="add()">
+      + Add Time Range
+    </button>
+
+    <div *ngFor="let item of filtered" class="card p-2 mb-2">
+      <div class="d-flex justify-content-between">
+        <div>
+          <strong>{{ item.startTime }} - {{ item.endTime }}</strong>
+          | Slot: {{ item.slotDurationMinutes }}m
+          | Buffer: {{ item.bufferMinutes }}m
+        </div>
+        <div>
+          <button class="btn btn-sm btn-warning me-2" (click)="edit(item)">Edit</button>
+          <button class="btn btn-sm btn-danger" (click)="deactivate(item.id!)">Deactivate</button>
+        </div>
+      </div>
+    </div>
+
+    <app-time-range-form
+      *ngIf="showForm"
+      [doctorId]="doctorId"
+      [dayOfWeek]="selectedDay"
+      [model]="editing"
+      (saved)="save($event)"
+      (cancelled)="showForm=false">
+    </app-time-range-form>
+
+  </div>
+</div>

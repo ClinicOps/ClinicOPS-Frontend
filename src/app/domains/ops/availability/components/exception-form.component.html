@@ -1,0 +1,43 @@
+<form [formGroup]="form" (ngSubmit)="submit()" class="card p-3 mt-3">
+
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Date</label>
+            <input type="date" formControlName="date" class="form-control" />
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Type</label>
+            <select formControlName="type" class="form-control">
+                <option value="BLOCKED">Blocked</option>
+                <option value="LEAVE">Leave</option>
+                <option value="EXTRA">Extra</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Start Time</label>
+            <input type="time" formControlName="startTime" class="form-control" />
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">End Time</label>
+            <input type="time" formControlName="endTime" class="form-control" />
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <label class="form-label">Reason</label>
+        <input type="text" formControlName="reason" class="form-control" />
+    </div>
+
+    <div class="text-end mt-3">
+        <button class="btn btn-primary me-2">
+            {{ model ? 'Update' : 'Save' }}
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="cancelled.emit()">
+            Cancel
+        </button>
+    </div>
+
+</form>

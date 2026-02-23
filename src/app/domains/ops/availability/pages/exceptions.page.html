@@ -1,0 +1,31 @@
+<div class="card p-3">
+    <h4>Availability Exceptions</h4>
+
+    <button class="btn btn-success mt-3 mb-3" (click)="add()">
+        + Add Exception
+    </button>
+
+    <div *ngFor="let ex of exceptions" class="card p-2 mb-2">
+        <div class="d-flex justify-content-between">
+            <div>
+                <strong>{{ ex.date }}</strong>
+                | {{ ex.type }}
+                <span *ngIf="ex.startTime">
+                    | {{ ex.startTime }} - {{ ex.endTime }}
+                </span>
+                <span *ngIf="ex.reason">
+                    | {{ ex.reason }}
+                </span>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-warning me-2" (click)="edit(ex)">Edit</button>
+                <button class="btn btn-sm btn-danger" (click)="delete(ex.id!)">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <app-exception-form *ngIf="showForm" [doctorId]="doctorId" [model]="editing" (saved)="save($event)"
+        (cancelled)="showForm=false">
+    </app-exception-form>
+
+</div>

@@ -1,0 +1,46 @@
+<form [formGroup]="form" (ngSubmit)="submit()" class="card p-3 mt-3">
+
+    <div class="row">
+        <div class="col-md-3">
+            <label class="form-label">Start Time</label>
+            <input type="time" formControlName="startTime" class="form-control" />
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">End Time</label>
+            <input type="time" formControlName="endTime" class="form-control" />
+        </div>
+
+        <div class="col-md-2">
+            <label class="form-label">Slot (min)</label>
+            <input type="number" formControlName="slotDurationMinutes" class="form-control" />
+        </div>
+
+        <div class="col-md-2">
+            <label class="form-label">Buffer (min)</label>
+            <input type="number" formControlName="bufferMinutes" class="form-control" />
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-3">
+            <label class="form-label">Valid From</label>
+            <input type="date" formControlName="validFrom" class="form-control" />
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Valid To</label>
+            <input type="date" formControlName="validTo" class="form-control" />
+        </div>
+    </div>
+
+    <div class="text-end mt-3">
+        <button type="submit" class="btn btn-primary me-2">
+            {{ model ? 'Update' : 'Save' }}
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="cancelled.emit()">
+            Cancel
+        </button>
+    </div>
+
+</form>

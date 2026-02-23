@@ -24,4 +24,10 @@ export class AppointmentApi {
   cancel(appointmentId: string) {
     return this.api.delete<void>(`/ops/appointments/${appointmentId}`);
   }
+
+  getDoctorSlots(doctorId: string, date: string) {
+  return this.api.get<any[]>(
+    `/doctors/${doctorId}/slots?date=${date}`
+  );
+}
 }

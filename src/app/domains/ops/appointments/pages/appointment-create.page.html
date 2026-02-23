@@ -10,10 +10,31 @@
   </select>
 </div>
 
-<div>
-  <label>Scheduled At</label>
-  <input type="datetime-local"
-         [(ngModel)]="scheduledAt" />
+<div class="mt-4" *ngIf="slots.length > 0">
+
+  <h5>Select Time Slot</h5>
+
+  <div class="d-flex flex-wrap gap-2 mt-2">
+
+    <button
+      *ngFor="let slot of slots"
+      type="button"
+      class="btn"
+      [ngClass]="{
+        'btn-success': slot.status === 'AVAILABLE' && selectedSlot?.start !== slot.start,
+        'btn-primary': selectedSlot?.start === slot.start,
+        'btn-danger': slot.status === 'BOOKED',
+        'btn-dark': slot.status === 'BLOCKED',
+        'btn-secondary': slot.status === 'EXPIRED'
+      }"
+      [disabled]="slot.status !== 'AVAILABLE'"
+      (click)="selectSlot(slot)">
+
+      {{ slot.start }}
+    </button>
+
+  </div>
+
 </div>
 
 <div>
