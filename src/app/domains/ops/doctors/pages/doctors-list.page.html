@@ -1,0 +1,95 @@
+<h2>Doctors</h2>
+
+<!-- 🔎 FILTERS -->
+<div style="margin-bottom:20px;">
+    <input placeholder="Search by name" [(ngModel)]="filters.search" />
+
+    <input placeholder="Specialization" [(ngModel)]="filters.specialization" />
+
+    <select [(ngModel)]="filters.status">
+        <option value="">All Status</option>
+        <option value="ACTIVE">ACTIVE</option>
+        <option value="INACTIVE">INACTIVE</option>
+        <option value="SUSPENDED">SUSPENDED</option>
+        <option value="VISITING">VISITING</option>
+    </select>
+
+    <select [(ngModel)]="filters.available">
+        <option value="">All Availability</option>
+        <option [value]="true">Available</option>
+        <option [value]="false">Not Available</option>
+    </select>
+
+    <button (click)="applyFilters()">Apply</button>
+</div>
+
+<!-- 📊 TOTAL -->
+<div>
+    Total: {{ totalElements() }}
+</div>
+
+<div class="actions-bar">
+  <button routerLink="create">Create Doctor</button>
+  <button (click)="bulkArchive()">Bulk Archive</button>
+  <button (click)="exportCSV()">Export CSV</button>
+</div>
+
+<!-- 📄 TABLE -->
+<table border="1" width="100%" style="margin-top:10px;">
+    <thead>
+        <tr>
+            <th><input type="checkbox" (change)="toggleAll($event)" /></th>
+            <th>Name</th>
+            <th>License</th>
+            <th>Status</th>
+            <th>Available</th>
+            <th>Specializations</th>
+            <th>Fee</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let d of doctors()">
+        <td>
+            <input type="checkbox" [checked]="isSelected(d)" (change)="toggle(d)" />
+        </td>
+            <td>{{ d.firstName }} {{ d.lastName }}</td>
+            <td>{{ d.licenseNumber }}</td>
+            <td>
+                <select [ngModel]="d.status" (ngModelChange)="changeStatus(d, $event)">
+                    <option value="ACTIVE">ACTIVE</option>
+                    <option value="INACTIVE">INACTIVE</option>
+                    <option value="SUSPENDED">SUSPENDED</option>
+                    <option value="VISITING">VISITING</option>
+                </select>
+            </td>
+            <td>{{ d.available }}</td>
+            <td>{{ d.specializations.join(', ') }}</td>
+            <td>{{ d.consultationFee }}</td>
+            <td>
+                <button (click)="edit(d)">Edit</button>
+                <button (click)="archive(d)" style="color:red;">Archive</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- 📄 PAGINATION -->
+<div style="margin-top:15px;">
+    <button (click)="changePage(-1)">Previous</button>
+    Page {{ page() + 1 }} of {{ totalPages() }}
+    <button (click)="changePage(1)">Next</button>
+</div>
+
+<!-- comment *ngIf to see below content -->
+<div *ngIf="visitingModalDoctor" class="modal-backdrop">
+  <div class="modal">
+    <h3>Set Visiting Dates</h3>
+
+    <input type="date" [(ngModel)]="visitingFrom" />
+    <input type="date" [(ngModel)]="visitingTo" />
+
+    <button (click)="confirmVisiting()">Save</button>
+    <button (click)="closeModal()">Cancel</button>
+  </div>
+</div>

@@ -7,8 +7,14 @@ export class ApiClient {
 
   constructor(private http: HttpClient) {}
 
-  get<T>(path: string, headers?: HttpHeaders) {
-    return this.http.get<T>(`${this.baseUrl}${path}`, { headers });
+  get<T>(
+    path: string,
+    options?: {
+      params?: any;
+      headers?: any;
+    },
+  ) {
+    return this.http.get<T>(`${this.baseUrl}${path}`, options);
   }
 
   post<T>(path: string, body: any, headers?: HttpHeaders) {
@@ -26,5 +32,4 @@ export class ApiClient {
   delete<T>(path: string, headers?: HttpHeaders) {
     return this.http.delete<T>(`${this.baseUrl}${path}`, { headers });
   }
-  
 }

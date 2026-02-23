@@ -1,0 +1,82 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+
+    <div>
+        <label>License Number</label>
+        <input formControlName="licenseNumber" />
+    </div>
+
+    <div>
+        <label>First Name</label>
+        <input formControlName="firstName" />
+    </div>
+
+    <div>
+        <label>Last Name</label>
+        <input formControlName="lastName" />
+    </div>
+
+    <div>
+        <label>Phone</label>
+        <input formControlName="phone" />
+    </div>
+
+    <div>
+        <label>Email</label>
+        <input formControlName="email" />
+    </div>
+
+    <div>
+        <label>Profile Image URL</label>
+        <input formControlName="profileImageUrl" />
+    </div>
+
+    <div>
+        <label>Specializations</label>
+
+        <div>
+            <span *ngFor="let s of form.value.specializations; let i = index" class="chip">
+                {{ s }}
+                <button type="button" (click)="removeSpecialization(i)">x</button>
+            </span>
+        </div>
+
+        <input placeholder="Add specialization" formControlName="newSpecialization" />
+        <button type="button" (click)="addSpecialization()">Add</button>
+    </div>
+
+    <div>
+        <label>Consultation Fee</label>
+        <input type="number" formControlName="consultationFee" />
+    </div>
+
+    <div>
+        <label>Status</label>
+        <select formControlName="status">
+            <option *ngFor="let s of statuses" [value]="s">
+                {{ s }}
+            </option>
+        </select>
+    </div>
+
+    <div *ngIf="form.get('status')?.value === 'VISITING'">
+        <div>
+            <label>Visiting From</label>
+            <input type="date" formControlName="visitingFrom" />
+        </div>
+
+        <div>
+            <label>Visiting To</label>
+            <input type="date" formControlName="visitingTo" />
+        </div>
+    </div>
+
+    <div *ngIf="form.get('status')?.value !== 'VISITING'">
+        <label>
+            <input type="checkbox" formControlName="available" />
+            Available
+        </label>
+    </div>
+
+    <button type="submit">Save</button>
+
+</form>

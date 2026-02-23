@@ -10,6 +10,18 @@ export const routes: Routes = [
     component: AppointmentListPage,
   },
   {
+    path: 'ops/doctors',
+    loadChildren: () =>
+      import('./domains/ops/doctors/doctors.routes')
+        .then(m => m.DOCTORS_ROUTES)
+  },
+  {
+    path: 'patients',
+    loadChildren: () =>
+      import('./domains/ops/patients/patients.routes')
+        .then(m => m.PATIENTS_ROUTES)
+  },
+  {
     path: 'forbidden',
     component: ForbiddenPage
   },
@@ -17,11 +29,5 @@ export const routes: Routes = [
     path: '',
     redirectTo: 'ops/appointments',
     pathMatch: 'full'
-  },
-  {
-  path: 'patients',
-  loadChildren: () =>
-    import('./domains/ops/patients/patients.routes')
-      .then(m => m.PATIENTS_ROUTES)
-}
+  }
 ];

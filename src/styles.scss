@@ -1,1 +1,27 @@
 /* You can add global styles to this file, and also import other style files */
+.badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: white;
+}
+
+.badge-active { background: #16a34a; }
+.badge-inactive { background: #64748b; }
+.badge-suspended { background: #dc2626; }
+.badge-visiting { background: #2563eb; }
+
+.actions-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  justify-content: end;
+}
+
+.chip {
+  display: inline-block;
+  background: #e2e8f0;
+  padding: 4px 8px;
+  border-radius: 16px;
+  margin-right: 5px;
+}
