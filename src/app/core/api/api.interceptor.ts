@@ -5,22 +5,18 @@ import { ClinicContextService } from '../clinic/clinic-context.service';
 
 export const apiInterceptor: HttpInterceptorFn = (req, next) => {
   const auth = inject(AuthService);
-  const clinicContext = inject(ClinicContextService);
 
-  let headers = req.headers;
+  const token = auth.getAccessToken();
 
-  const token = auth.getToken();
-  const clinicId = clinicContext.getClinicId();
-
-  if (token) {
-    headers = headers.set('Authorization', `Bearer ${token}`);
+  if (!token) {
+    return next(req);
   }
 
-  if (clinicId) {
-    headers = headers.set('X-Clinic-Id', clinicId);
-  }
-
-  const cloned = req.clone({ headers });
+  const cloned = req.clone({
+    setHeaders: {
+      Authorization: `Bearer ${token}`
+    }
+  });
 
   return next(cloned);
 };

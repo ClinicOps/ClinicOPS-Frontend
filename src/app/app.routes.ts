@@ -4,8 +4,12 @@ import { permissionGuard } from './core/permissions/permission.guard';
 import { APPOINTMENT_PERMISSIONS } from './domains/ops/appointments/permissions';
 import { AVAILABILITY_ROUTES } from './domains/ops/availability/availability.routes';
 import { ForbiddenPage } from '../shared/components/forbidden.page';
+import { RegisterComponent } from './core/auth/register/register.component';
+import { LoginComponent } from './core/auth/login/login.component';
 
 export const routes: Routes = [
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
   {
     path: 'ops/appointments',
     component: AppointmentListPage,

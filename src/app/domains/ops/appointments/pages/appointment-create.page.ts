@@ -31,13 +31,13 @@ export class AppointmentCreatePage implements OnInit {
 
   ngOnInit(): void {
     this.loadPatients();
-    this.form.get('doctorId')?.valueChanges.subscribe(() => {
-      this.loadSlots();
-    });
+    // this.form.get('doctorId')?.valueChanges.subscribe(() => {
+    //   this.loadSlots();
+    // });
 
-    this.form.get('appointmentDate')?.valueChanges.subscribe(() => {
-      this.loadSlots();
-    });
+    // this.form.get('appointmentDate')?.valueChanges.subscribe(() => {
+    //   this.loadSlots();
+    // });
   }
 
   selectSlot(slot: SlotDTO) {
@@ -45,9 +45,9 @@ export class AppointmentCreatePage implements OnInit {
 
     this.selectedSlot = slot;
 
-    this.form.patchValue({
-      startTime: slot.start,
-    });
+    // this.form.patchValue({
+    //   startTime: slot.start,
+    // });
   }
 
   loadPatients() {
@@ -62,18 +62,18 @@ export class AppointmentCreatePage implements OnInit {
   }
 
   loadSlots() {
-    const doctorId = this.form.get('doctorId')?.value;
-    const date = this.form.get('appointmentDate')?.value;
+    // const doctorId = this.form.get('doctorId')?.value;
+    // const date = this.form.get('appointmentDate')?.value;
 
-    if (!doctorId || !date) {
-      this.slots = [];
-      return;
-    }
+    // if (!doctorId || !date) {
+    //   this.slots = [];
+    //   return;
+    // }
 
-    this.appointmentApi.getDoctorSlots(doctorId, date).subscribe((res) => {
-      this.slots = res;
-      this.selectedSlot = undefined;
-    });
+    // this.appointmentApi.getDoctorSlots(doctorId, date).subscribe((res) => {
+    //   this.slots = res;
+    //   this.selectedSlot = undefined;
+    // });
   }
 
   create() {
