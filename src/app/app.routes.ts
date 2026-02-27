@@ -6,10 +6,15 @@ import { AVAILABILITY_ROUTES } from './domains/ops/availability/availability.rou
 import { ForbiddenPage } from '../shared/components/forbidden.page';
 import { RegisterComponent } from './core/auth/register/register.component';
 import { LoginComponent } from './core/auth/login/login.component';
+import { ClinicSetupPage } from './core/clinic/setup/clinic-setup.page';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  {
+  path: 'setup-clinic',
+  component: ClinicSetupPage
+},
   {
     path: 'ops/appointments',
     component: AppointmentListPage,
