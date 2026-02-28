@@ -29,26 +29,29 @@ export class AppointmentFacade {
 
   constructor() {
     // reactively load when permission becomes available
-    effect(() => {
-      if (this.canView()) {
-        this.load();
-      }
-    });
+      effect(() => {
+        if (this.canView()) {
+          this.load();
+        }
+      });
   }
 
   load(): void {
+    if (!this.canView()) return;
     this.api.list().subscribe(data => {
       this._appointments.set(data);
     });
   }
 
   create(payload: { patientId: string; scheduledAt: string }): void {
+    if (!this.canCreate()) return;
     this.api.create(payload).subscribe(() => {
       this.load();
     });
   }
 
   cancel(id: string): void {
+    if (!this.canUpdate()) return;
     this.api.cancel(id).subscribe(() => {
       this.load();
     });

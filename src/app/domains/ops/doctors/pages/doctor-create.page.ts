@@ -19,7 +19,7 @@ export class DoctorCreatePage {
   ) {}
 
   onSave(payload: any) {
-    this.facade.createDoctor(payload).subscribe(() => {
+    this.facade.createDoctor(payload)?.subscribe(() => {
       this.router.navigate(['../']);
     });
   }

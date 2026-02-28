@@ -47,7 +47,7 @@ constructor(
 
     this.loading = true;
 
-    this.facade.create(this.form.value).subscribe({
+    this.facade.create(this.form.value)?.subscribe({
       next: () => {
         this.loading = false;
         this.router.navigate(['/patients']);

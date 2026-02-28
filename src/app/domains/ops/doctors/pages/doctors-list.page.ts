@@ -56,7 +56,7 @@ export class DoctorsListPage implements OnInit {
   archive(doctor: any) {
     if (!confirm('Archive this doctor?')) return;
 
-    this.facade.archiveDoctor(doctor.clinicDoctorId).subscribe(() => this.facade.loadDoctors());
+    this.facade.archiveDoctor(doctor.clinicDoctorId)?.subscribe(() => this.facade.loadDoctors());
   }
 
   edit(doctor: any) {
@@ -70,8 +70,8 @@ export class DoctorsListPage implements OnInit {
     }
 
     this.facade
-      .changeStatus(doctor.clinicDoctorId, { status: newStatus })
-      .subscribe(() => this.facade.loadDoctors());
+      .changeStatus(doctor.clinicDoctorId, { status: newStatus })?.
+      subscribe(() => this.facade.loadDoctors());
   }
 
   confirmVisiting() {
@@ -80,8 +80,8 @@ export class DoctorsListPage implements OnInit {
         status: 'VISITING',
         visitingFrom: this.visitingFrom,
         visitingTo: this.visitingTo,
-      })
-      .subscribe(() => {
+      })?.
+      subscribe(() => {
         this.closeModal();
         this.facade.loadDoctors();
       });
@@ -126,7 +126,7 @@ export class DoctorsListPage implements OnInit {
     const ids = Array.from(this.selected);
 
     // call backend bulk endpoint when implemented
-    ids.forEach((id) => this.facade.archiveDoctor(id).subscribe());
+    ids.forEach((id) => this.facade.archiveDoctor(id)?.subscribe());
 
     this.selected.clear();
     this.facade.loadDoctors();

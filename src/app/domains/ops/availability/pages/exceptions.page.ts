@@ -29,13 +29,15 @@ export class ExceptionsPage {
   }
 
   load() {
+    if (!this.doctorId) return;
+
     const today = new Date();
     const from = today.toISOString().split('T')[0];
     const future = new Date();
     future.setMonth(future.getMonth() + 3);
     const to = future.toISOString().split('T')[0];
 
-    this.facade.getExceptions(this.doctorId, from, to).subscribe((res) => (this.exceptions = res));
+    this.facade.getExceptions(this.doctorId, from, to)?.subscribe((res) => (this.exceptions = res));
   }
 
   add() {
@@ -51,15 +53,15 @@ export class ExceptionsPage {
   delete(id: string) {
     if (!confirm('Delete this exception?')) return;
 
-    this.facade.deleteException(id).subscribe(() => this.load());
+    this.facade.deleteException(id)?.subscribe(() => this.load());
   }
 
   save(payload: DoctorAvailabilityException) {
     const call = this.editing?.id
-      ? this.facade.updateException(this.editing.id!, { ...payload, version: this.editing.version })
+      ? this.facade.updateException(this.editing.id, { ...payload, version: this.editing.version! })
       : this.facade.createException(payload);
 
-    call.subscribe(() => {
+    call?.subscribe(() => {
       this.showForm = false;
       this.load();
     });

@@ -1,13 +1,21 @@
-import { Injectable } from '@angular/core';
+import { computed, effect, inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PatientsStore } from './patients.store';
 import { PageResponse, Patient } from './types';
 import { ApiClient } from '../../../core/api/api-client';
 import { MeService } from '../../../core/auth/me.service';
-
+import { PATIENTS_PERMISSIONS } from './permissions';
+import { PermissionService } from '../../../core/permissions/permission.service';
 
 @Injectable({ providedIn: 'root' })
 export class PatientsFacade {
+  private permissionService = inject(PermissionService);
+
+  readonly canView = computed(() => this.permissionService.has(PATIENTS_PERMISSIONS.VIEW));
+  readonly canCreate = computed(() => this.permissionService.has(PATIENTS_PERMISSIONS.CREATE));
+  readonly canUpdate = computed(() => this.permissionService.has(PATIENTS_PERMISSIONS.UPDATE));
+  readonly canDelete = computed(() => this.permissionService.has(PATIENTS_PERMISSIONS.DELETE));
+
   private store = new PatientsStore();
 
   patients = this.store.patients;
@@ -15,7 +23,7 @@ export class PatientsFacade {
   totalElements = this.store.totalElements;
 
   totalPages = this.store.totalPages;
-  
+
   page = this.store.page;
   size = this.store.size;
   query = this.store.query;
@@ -24,9 +32,16 @@ export class PatientsFacade {
   constructor(
     private api: ApiClient,
     private me: MeService,
-  ) {}
+  ) {
+    effect(() => {
+      if (this.canView()) {
+        this.load();
+      }
+    });
+  }
 
   load() {
+    if (!this.canView()) return;
     const clinicId = this.me.clinicId();
     if (!clinicId) return;
 
@@ -50,26 +65,31 @@ export class PatientsFacade {
   }
 
   create(body: any) {
+    if (!this.canCreate()) return null;
     const clinicId = this.me.clinicId();
     return this.api.post(`/api/clinics/${clinicId}/patients`, body);
   }
 
   getById(id: string) {
+    if (!this.canView()) return null;
     const clinicId = this.me.clinicId();
     return this.api.get<Patient>(`/api/clinics/${clinicId}/patients/${id}`);
   }
 
   update(id: string, body: any) {
+    if (!this.canUpdate()) return null;
     const clinicId = this.me.clinicId();
     return this.api.put(`/api/clinics/${clinicId}/patients/${id}`, body);
   }
 
   archive(id: string) {
+    if (!this.canUpdate()) return null;
     const clinicId = this.me.clinicId();
     return this.api.patch(`/api/clinics/${clinicId}/patients/${id}/archive`, {});
   }
 
   activate(id: string) {
+    if (!this.canUpdate()) return null;
     const clinicId = this.me.clinicId();
     return this.api.patch(`/api/clinics/${clinicId}/patients/${id}/activate`, {});
   }

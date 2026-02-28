@@ -19,13 +19,13 @@ export class PatientsListPage implements OnInit {
   archive(id: string) {
     if (!confirm('Archive this patient?')) return;
 
-    this.facade.archive(id).subscribe(() => {
+    this.facade.archive(id)?.subscribe(() => {
       this.facade.load();
     });
   }
 
   activate(id: string) {
-    this.facade.activate(id).subscribe(() => {
+    this.facade.activate(id)?.subscribe(() => {
       this.facade.load();
     });
   }

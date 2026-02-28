@@ -3,7 +3,7 @@
 ## Project Overview
 **Type:** Angular 20 SSR application (clinic management system)  
 **Architecture:** Standalone components with RxJS, Angular Signals, and domain-driven design  
-**Backend:** Node.js API at `http://localhost:8080`  
+**Backend:** Java Springboot API at `http://localhost:8080`  
 **Key Focus:** Modular domain structure, reactive state management, permission-based access control
 
 ---

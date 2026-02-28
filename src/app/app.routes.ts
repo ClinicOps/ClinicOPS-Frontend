@@ -18,6 +18,7 @@ export const routes: Routes = [
   {
     path: 'ops/appointments',
     component: AppointmentListPage,
+    canActivate: [permissionGuard(APPOINTMENT_PERMISSIONS.VIEW)]
   },
   {
     path: 'ops/doctors',
@@ -44,6 +45,6 @@ export const routes: Routes = [
   {
     path: '',
     redirectTo: 'ops/appointments',
-    pathMatch: 'full'
+    pathMatch: 'full',
   }
 ];

@@ -21,7 +21,7 @@ export class LoginComponent {
     this.authService.login(this.email, this.password).subscribe({
       next: () => {
         this.http
-          .get<boolean>('http://localhost:8080/clinics/my-membership')
+          .get<boolean>('http://localhost:8080/api/clinics/my-membership')
           .subscribe((hasClinic) => {
             if (hasClinic) {
               this.router.navigate(['/']);

@@ -36,7 +36,7 @@ export class DoctorEditPage implements OnInit {
 
   onSave(payload: any) {
     const id = this.route.snapshot.paramMap.get('id')!;
-    this.facade.updateDoctor(id, payload).subscribe(() => {
+    this.facade.updateDoctor(id, payload)?.subscribe(() => {
       this.router.navigate(['../../']);
     });
   }

@@ -31,7 +31,7 @@ export class PatientEditPage implements OnInit {
 }
 
 private loadPatient() {
-  this.facade.getById(this.id).subscribe(res => {
+  this.facade.getById(this.id)?.subscribe(res => {
     this.patient = { ...res };
     this.cdr.markForCheck();
   });
@@ -41,7 +41,7 @@ private loadPatient() {
   onSave(data: any) {
     this.loading = true;
 
-    this.facade.update(this.id, data).subscribe({
+    this.facade.update(this.id, data)?.subscribe({
       next: () => {
         this.loading = false;
         this.router.navigate(['/patients']);

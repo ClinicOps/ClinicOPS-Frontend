@@ -35,8 +35,8 @@ export class WeeklySchedulePage {
   }
 
   load() {
-    this.facade.loadDoctorAvailability(this.doctorId)
-      .subscribe(res => {
+    this.facade.loadDoctorAvailability(this.doctorId)?.
+      subscribe(res => {
         this.schedules = res;
         this.filter();
       });
@@ -66,8 +66,8 @@ export class WeeklySchedulePage {
   deactivate(id: string) {
     if (!confirm('Deactivate this schedule?')) return;
 
-    this.facade.deactivate(id)
-      .subscribe(() => this.load());
+    this.facade.deactivate(id)?.
+      subscribe(() => this.load());
   }
 
   save(payload: DoctorAvailability) {
@@ -75,7 +75,7 @@ export class WeeklySchedulePage {
       ? this.facade.update(this.editing.id!, { ...payload, version: this.editing.version })
       : this.facade.create(payload);
 
-    call.subscribe(() => {
+    call?.subscribe(() => {
       this.showForm = false;
       this.load();
     });
