@@ -1,39 +1,30 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { Router, RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
+/**
+ * @deprecated
+ * Clinic setup now occurs during user registration.
+ * This page is kept for backward compatibility but should no longer be used.
+ * New users should use the RegisterComponent instead.
+ */
 @Component({
   standalone: true,
   selector: 'app-clinic-setup-page',
-  imports: [FormsModule],
-  templateUrl: './clinic-setup.page.html'
+  imports: [CommonModule, RouterLink],
+  template: `
+    <div style="padding: 20px; text-align: center;">
+      <h2>Clinic Setup</h2>
+      <p style="color: #f59e0b; border: 1px solid #f59e0b; padding: 10px; margin: 20px 0;">
+        <strong>This page is deprecated.</strong> 
+        Clinic setup now happens during registration. 
+        <a routerLink="/register" style="text-decoration: underline;">Create a new account</a>
+      </p>
+      <p>If you already have credentials, please <a routerLink="/login" style="text-decoration: underline;">login here</a></p>
+    </div>
+  `
 })
 export class ClinicSetupPage {
 
-  organizationName = '';
-  clinicName = '';
-  timezone = 'Asia/Kolkata';
-  message = '';
-
-  constructor(
-    private http: HttpClient,
-    private router: Router
-  ) {}
-
-  createClinic() {
-    this.http.post('http://localhost:8080/clinics/setup', {
-      organizationName: this.organizationName,
-      clinicName: this.clinicName,
-      timezone: this.timezone
-    }).subscribe({
-      next: () => {
-        alert('Clinic created. Please login again.');
-        this.router.navigate(['/login']);
-      },
-      error: () => {
-        this.message = 'Failed to create clinic';
-      }
-    });
-  }
+  constructor(private router: Router) {}
 }

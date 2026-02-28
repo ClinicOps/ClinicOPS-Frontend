@@ -2,71 +2,75 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { tap } from 'rxjs';
-
-interface AuthResponse {
-  accessToken: string;
-  refreshToken: string;
-}
+import { AuthResponse, RegisterRequest, LoginRequest } from './models';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
   private readonly API = 'http://localhost:8080/auth';
+  private readonly ACCESS_TOKEN_KEY = 'accessToken';
+  private readonly REFRESH_TOKEN_KEY = 'refreshToken';
+  private platformId = inject(PLATFORM_ID);
 
   constructor(private http: HttpClient) {}
 
-  register(email: string, password: string) {
-    return this.http.post(`${this.API}/register`, { email, password });
-  }
-
-  login(email: string, password: string) {
+  register(request: RegisterRequest) {
     return this.http
-      .post<AuthResponse>(`${this.API}/login`, { email, password })
+      .post<AuthResponse>(`${this.API}/register`, request)
       .pipe(
         tap(res => {
-          localStorage.setItem('accessToken', res.accessToken);
+          this.storeTokens(res.accessToken, res.refreshToken);
+        })
+      );
+  }
+
+  login(request: LoginRequest) {
+    return this.http
+      .post<AuthResponse>(`${this.API}/login`, request)
+      .pipe(
+        tap(res => {
+          this.storeTokens(res.accessToken, res.refreshToken);
         })
       );
   }
 
   getAccessToken(): string | null {
     if (!isPlatformBrowser(this.platformId)) {
-        return null;
+      return null;
     }
-    return localStorage.getItem('accessToken');
+    return localStorage.getItem(this.ACCESS_TOKEN_KEY);
+  }
+
+  getRefreshToken(): string | null {
+    if (!isPlatformBrowser(this.platformId)) {
+      return null;
+    }
+    return localStorage.getItem(this.REFRESH_TOKEN_KEY);
+  }
+
+  private storeTokens(accessToken: string, refreshToken: string): void {
+    if (isPlatformBrowser(this.platformId)) {
+      console.log('[AuthService] Storing tokens in localStorage');
+      localStorage.setItem(this.ACCESS_TOKEN_KEY, accessToken);
+      localStorage.setItem(this.REFRESH_TOKEN_KEY, refreshToken);
+      console.log('[AuthService] Tokens stored. accessToken:', accessToken.substring(0, 20) + '...');
+    } else {
+      console.warn('[AuthService] Not in browser, skipping token storage');
+    }
   }
 
   logout() {
-    localStorage.removeItem('accessToken');
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem(this.ACCESS_TOKEN_KEY);
+      localStorage.removeItem(this.REFRESH_TOKEN_KEY);
+    }
   }
 
   isLoggedIn(): boolean {
     return !!this.getAccessToken();
   }
 
-  private readonly TOKEN_KEY = 'clinicops_token';
-  private platformId = inject(PLATFORM_ID);
-
-  setToken(token: string) {
-    if (isPlatformBrowser(this.platformId)) {
-    localStorage.setItem(this.TOKEN_KEY, token);
-    }
-  }
-
-  getToken(): string | null {
-    if (!isPlatformBrowser(this.platformId)) {
-        return null;
-    }
-    return localStorage.getItem(this.TOKEN_KEY);
-  }
-
-  clear() {
-    if (isPlatformBrowser(this.platformId)) {
-    localStorage.removeItem(this.TOKEN_KEY);
-    }
-  }
-
   isAuthenticated(): boolean {
-    return !!this.getToken();
+    return this.isLoggedIn();
   }
 }

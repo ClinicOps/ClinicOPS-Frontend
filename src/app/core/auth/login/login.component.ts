@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../auth.service';
-import { HttpClient } from '@angular/common/http';
+import { ClinicContextService } from '../../clinic/clinic-context.service';
+import { MeService } from '../me.service';
+import { LoginRequest } from '../models';
 
 @Component({
   standalone: true,
@@ -14,25 +16,45 @@ export class LoginComponent {
   email = '';
   password = '';
   message = '';
+  loading = false;
 
-  constructor(private authService: AuthService, private router: Router, private http: HttpClient) {}
+  private meService = inject(MeService);
+
+  constructor(
+    private authService: AuthService,
+    private clinicContext: ClinicContextService,
+    private router: Router
+  ) {}
 
   login() {
-    this.authService.login(this.email, this.password).subscribe({
-      next: () => {
-        this.http
-          .get<boolean>('http://localhost:8080/api/clinics/my-membership')
-          .subscribe((hasClinic) => {
-            if (hasClinic) {
-              this.router.navigate(['/']);
-            } else {
-              this.router.navigate(['/setup-clinic']);
-            }
-          });
+    if (!this.email || !this.password) {
+      this.message = 'Email and password are required';
+      return;
+    }
+
+    this.loading = true;
+    this.message = '';
+
+    const request: LoginRequest = {
+      email: this.email,
+      password: this.password
+    };
+
+    this.authService.login(request).subscribe({
+      next: (response) => {
+        // Store clinic context from response
+        this.clinicContext.setClinicId(response.user.clinicId);
+        
+        // Initialize MeService with user data from response
+        this.meService.initializeFromAuth(response.user.userId, response.user.clinicId);
+        
+        // Navigate to dashboard
+        this.router.navigate(['/ops/appointments']);
       },
       error: () => {
+        this.loading = false;
         this.message = 'Invalid credentials';
-      },
+      }
     });
   }
 }

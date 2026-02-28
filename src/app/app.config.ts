@@ -5,6 +5,7 @@ import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideHttpClient, withInterceptors, withFetch } from '@angular/common/http';
 import { apiInterceptor } from './core/api/api.interceptor';
+import { responseUnwrapperInterceptor } from './core/api/response-unwrapper.interceptor';
 
 
 
@@ -16,7 +17,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes), 
     provideHttpClient(
       withFetch(),
-      withInterceptors([apiInterceptor])
+      withInterceptors([responseUnwrapperInterceptor, apiInterceptor])
     )
   ]
 };

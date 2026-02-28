@@ -23,7 +23,26 @@ export class MeService {
     private clinicContext: ClinicContextService
   ) {}
 
+  /**
+   * Initialize from auth response (register/login).
+   * More efficient than calling /me endpoint since we already have the data.
+   */
+  initializeFromAuth(userId: string, clinicId: string): void {
+    this._userId.set(userId);
+    this._clinicId.set(clinicId);
+    
+    if (clinicId) {
+      this.clinicContext.setClinicId(clinicId);
+    }
+
+    this._loaded.set(true);
+  }
+
   bootstrap(): void {
+    if (this._loaded()) {
+      return; // Already loaded
+    }
+
     this.api.get<MeResponse>('/me')
       .subscribe(res => {
         this._userId.set(res.userId);

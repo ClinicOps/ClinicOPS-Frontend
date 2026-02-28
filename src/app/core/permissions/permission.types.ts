@@ -1,1 +1,1 @@
-export type PermissionString = `${string}:${string}:${string}`;
+export type PermissionString = `${string}:${string}:${string}` | '*';

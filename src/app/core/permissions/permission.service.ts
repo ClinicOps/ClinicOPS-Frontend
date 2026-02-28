@@ -28,20 +28,38 @@ export class PermissionService {
 }
 
   loadPermissions(): void {
+    console.log('[PermissionService] Loading permissions from /me/permissions');
     this.api
       .get<PermissionString[]>('/me/permissions')
-      .subscribe(perms => {
-        this._permissions.set(new Set(perms));
-        this._loaded.set(true);
+      .subscribe({
+        next: (perms) => {
+          console.log('[PermissionService] Permissions loaded:', perms);
+          this._permissions.set(new Set(perms));
+          this._loaded.set(true);
+        },
+        error: (error) => {
+          console.error('[PermissionService] Error loading permissions:', error);
+          // Set as loaded even on error to prevent infinite waiting
+          this._loaded.set(true);
+        }
       });
   }
 
   has(permission: PermissionString): boolean {
-    return this._permissions().has(permission);
+    const perms = this._permissions();
+    // Wildcard "*" means all permissions (OWNER role)
+    if (perms.has('*' as PermissionString)) {
+      return true;
+    }
+    return perms.has(permission);
   }
 
   hasAny(perms: PermissionString[]): boolean {
     const current = this._permissions();
+    // Wildcard "*" means all permissions
+    if (current.has('*' as PermissionString)) {
+      return true;
+    }
     return perms.some(p => current.has(p));
   }
 }
